@@ -1,6 +1,8 @@
 import React from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { Form, Button, Input, notification } from 'antd';
 import { auth } from '../../services/firebase';
+import './index.css';
 
 class Register extends React.Component {
     constructor () {
@@ -21,48 +23,49 @@ class Register extends React.Component {
         });
     }
     
-   /* handleRegister = async e => {
+    handleRegister = async e => {
         e.preventDefault();
         this.setState( {
             loading: true
         });
         const { email, password } = this.state;
         try {
-            await createUser
+            await createUserWithEmailAndPassword(auth, email, password);
+        } catch {
+            console.log('error');
+        }finally {
+            this.setState({
+                loading: false
+            });
         }
     }
-    */
+    
     
 
     render () {
+        const { loading } = this.state;
         return (
-            <div>
-                <fieldset>
-                    <legend>Register</legend>
+            <div className="auth_container">                
+            <Form layout="vertical" onSubmit={this.handleRegister}>
 
-                    <form onSubmit={this.handleRegister}>
-                        <label htmlFor="">
-                        <p>First Name</p>
-                        <input type='text' name="firstName" placeholder="First Name" onChange={this.handleChangeImput}/>
-                        </label>
+            <Form.Item label="First Name">
+              <Input type="text" name="firstName" placeholder="First Name" onChange={this.handleChangeInput}/>
+            </Form.Item>
 
-                        <label htmlFor="">
-                            <p>Last Name</p>
-                            <input type="text" name="lastName" placeholder="Last Name" onChange={this.handleChangeImput}/>
-                        </label>
-                        <label htmlFor="">
-                            <p>Email</p>
-                            <input type="email" name="email" placeholder="Email" onChange={this.handleChangeImput}/>
-                        </label>
-                        <label htmlFor="">
-                            <p>Password</p>
-                            <input type="password" name="password" placeholder="Password" onChange={this.handleChangeImput}/>
-                        </label>
+            <Form.Item label="Last Name">
+              <Input type="text" name="lastName" placeholder="Last Name" onChange={this.handleChangeInput}/>
+            </Form.Item>
 
-                        <hr/>
-                        <button>Register</button>
-                    </form>
-                </fieldset>
+            <Form.Item label="Email">
+              <Input type="email" name="email" placeholder="Email" onChange={this.handleChangeInput}/>
+            </Form.Item>
+
+            <Form.Item label="Password">
+              <Input type="password" name="password" placeholder="Password" onChange={this.handleChangeInput}/>
+            </Form.Item>
+
+            <Button type="primary" onclick={this.handleRegister} loading={loading}>Register</Button>
+          </Form>
             </div>
         )
     }
