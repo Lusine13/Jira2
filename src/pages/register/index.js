@@ -1,73 +1,89 @@
-import React from 'react';
+import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Form, Button, Input, notification } from 'antd';
 import { auth } from '.././services/firebase';
 import './index.css';
+import { regexpValitation } from '../../components/core/utils/constants';
 
-class Register extends React.Component {
-    constructor () {
-        super();
-        this.state = {
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-            loading: false
-        }
-    }
-
-    handleChangeImput = e => {
-        const { name, value } = e.target;
-        this.setState({
-            [name]: value
-        });
-    }
+const Register = () => {
+    const [loading, setLoading] = useState(false);
+    const [form] = Form.useForm();
     
-    handleRegister = async e => {
-        e.preventDefault();
-        this.setState( {
-            loading: true
-        });
-        const { email, password } = this.state;
+    const handleRegister = async values => {
+        setLoading(true);
+        const { email, password } = values;
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
-        } catch {
-            console.log('error');
-        }finally {
-            this.setState({
-                loading: false
-            });
+            await createUserWithEmailAndPassword(auth, email, password)
+        } catch (e) {
+            console.log(e);
+        } finally {
+            setLoading(false)
         }
     }
-    
-    
+    return (
+        <div className='auth_container'>
+            <Form layout="vertical" form={form} onFinish={handleRegister}>
+                <Form.Item 
+                label="First Name"
+                name="firstName"
+                rules={[
+                        {
+                        required: true,
+                        message: 'Please input your First Name!'
+                        }
+                    ]}
+                    >
+                    <Input type="text" placeholder="First Name"/>
+                </Form.Item>
 
-    render () {
-        const { loading } = this.state;
-        return (
-            <div className="auth_container">                
-            <Form layout="vertical" onSubmit={this.handleRegister}>
+                <Form.Item 
+                label="Last Name"
+                name="lastName"
+                rules={[
+                        {
+                        required: true,
+                        message: 'Please input your Last Name!'
+                        }
+                    ]}
+                    >
+                    <Input type="text" placeholder="Last Name"/>
+                </Form.Item>
 
-            <Form.Item label="First Name">
-              <Input type="text" name="firstName" placeholder="First Name" onChange={this.handleChangeInput}/>
-            </Form.Item>
+                <Form.Item 
+                label="Email"
+                name="email"
+                rules={[
+                        {
+                        required: true,
+                        message: 'Please input your Email!'
+                        }
+                    ]}
+                    >
+                    <Input type="text" placeholder="Email"/>
+                </Form.Item>
 
-            <Form.Item label="Last Name">
-              <Input type="text" name="lastName" placeholder="Last Name" onChange={this.handleChangeInput}/>
-            </Form.Item>
+                <Form.Item 
+                label="Password"
+                name="password"
+                rules={[
+                        {
+                        required: true,
+                        message: 'Please input your password!'
+                        },
+                        {
+                        pattern: regexpValitation,
+                        message: 'Wrong password'
+                        }
+                    ]}
+                    >
+                    <Input.Password placeholder="Password"/>
+                </Form.Item>
+                <Button type="primary" htmlType="submit" loading={loading}>
+                    Sign up
+                </Button>
+                </Form>
+        </div>
+    )
+}
 
-            <Form.Item label="Email">
-              <Input type="email" name="email" placeholder="Email" onChange={this.handleChangeInput}/>
-            </Form.Item>
-
-            <Form.Item label="Password">
-              <Input type="password" name="password" placeholder="Password" onChange={this.handleChangeInput}/>
-            </Form.Item>
-
-            <Button type="primary" onclick={this.handleRegister} loading={loading}>Register</Button>
-          </Form>
-            </div>
-        )
-    }
-};
 export default Register;
