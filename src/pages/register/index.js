@@ -2,18 +2,21 @@ import { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { Form, Button, Input, notification } from 'antd';
 import { auth } from '.././services/firebase';
+import { Link, useNavigate } from 'react-router-dom';
+import { ROUTE_CONSTANTS } from '../../components/core/utils/constants';
 import './index.css';
-import { regexpValitation } from '../../components/core/utils/constants';
 
 const Register = () => {
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
+    const navigate = useNavigate();
     
     const handleRegister = async values => {
         setLoading(true);
         const { email, password } = values;
         try {
-            await createUserWithEmailAndPassword(auth, email, password)
+            await createUserWithEmailAndPassword(auth, email, password);
+            navigate(ROUTE_CONSTANTS.LOGIN);
         } catch (e) {
             console.log(e);
         } finally {
@@ -69,11 +72,7 @@ const Register = () => {
                         {
                         required: true,
                         message: 'Please input your password!'
-                        },
-                        {
-                        pattern: regexpValitation,
-                        message: 'Wrong password'
-                        }
+                        }                        
                     ]}
                     >
                     <Input.Password placeholder="Password"/>
@@ -81,6 +80,9 @@ const Register = () => {
                 <Button type="primary" htmlType="submit" loading={loading}>
                     Sign up
                 </Button>
+                <Link to={ROUTE_CONSTANTS.LOGIN}>
+                    Sign in
+                </Link>
                 </Form>
         </div>
     )

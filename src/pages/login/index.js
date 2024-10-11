@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../services/firebase';
+import { Link } from 'react-router-dom';
+import { ROUTE_CONSTANTS, regexpValidation } from '../../components/core/utils/constants';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -49,7 +51,7 @@ const Login = () => {
                 message: 'Please input your password'
             },
             {
-                pattern:  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
+                pattern:  regexpValidation,
                 message: 'Wrong password'
             }
         ]}
@@ -60,6 +62,7 @@ const Login = () => {
         <Button type="primary" htmlType="submit" loading={loading} >
           Sign in
         </Button>
+        <Link to={ROUTE_CONSTANTS.REGISTER}>Sign up</Link>
       </Form>
     </div>
   )
