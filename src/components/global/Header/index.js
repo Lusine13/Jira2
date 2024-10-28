@@ -3,12 +3,12 @@ import { AuthContext } from '../../../context/authContext';
 import { Button, Flex } from 'antd';
 import AuthProfileDropDown from '../../sheard/AuthProfileDropDown';
 import { Link } from 'react-router-dom';
-import { ROUTE_CONSTANTS } from '../../core/utils/constants';
+import { ROUTE_CONSTANTS } from '../../../core/utils/constants';
 import './index.css';
 
 
 const Header = () => {
-    const { isAuth } = useContext(AuthContext);
+    const { isAuth, userProfileInfo } = useContext(AuthContext);
 
     return (
         <div className="main_header">
@@ -16,7 +16,7 @@ const Header = () => {
                 <p>Logo</p>
         <div>
             {
-                isAuth ? <AuthProfileDropDown /> : <Link to={ROUTE_CONSTANTS.LOGIN}><Button>Sign in</Button></Link>
+                isAuth ? <AuthProfileDropDown userProfileInfo={userProfileInfo}/> : <Link to={ROUTE_CONSTANTS.LOGIN}><Button>Sign in</Button></Link>
             }        
         </div>
         </Flex>

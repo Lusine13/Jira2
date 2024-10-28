@@ -1,16 +1,12 @@
 import { useState } from 'react';
 import { Form, Input, Button, notification } from 'antd';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-//import { auth } from '../../services/firebase';
-
 import { auth } from '../../../services/firebase';
-
-
 import { Link } from 'react-router-dom';
-import { ROUTE_CONSTANTS, regexpValidation } from '../../../components/core/utils/constants';
+import { ROUTE_CONSTANTS, regexpValidation } from '../../../core/utils/constants';
 import AuthWrapper from '../../../components/sheard/AuthWrapper';
-// import loginBanner from '../../core/images/auth-login.jpg';
-import loginBanner from '../../../components/core/images/auth-login.jpg';
+import loginBanner from '../../../core/images/auth-login.jpg';
+
 
 const Login = ({ setIsAuth }) => {
   const [loading, setLoading] = useState(false);
