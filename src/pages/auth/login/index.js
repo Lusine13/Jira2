@@ -3,7 +3,7 @@ import { Form, Input, Button, notification } from 'antd';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../services/firebase';
 import { Link } from 'react-router-dom';
-import { ROUTE_CONSTANTS, regexpValidation } from '../../../core/utils/constants';
+import { ROUTE_CONSTANTS, regexpValidation} from '../../../core/utils/constants';
 import AuthWrapper from '../../../components/sheard/AuthWrapper';
 import loginBanner from '../../../core/images/auth-login.jpg';
 
@@ -23,7 +23,7 @@ const Login = ({ setIsAuth }) => {
     } catch (error) {
         notification.error( {
           message: 'Invalid Login Credentials',
-        })
+        });
     } finally {
         setLoading(false);
     }    

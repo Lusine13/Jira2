@@ -7,6 +7,7 @@ import { setDoc, doc } from 'firebase/firestore';
 import AuthWrapper from '../../../components/sheard/AuthWrapper';
 import registerBanner from '../../../core/images/auth-register.jpg';
 import { Link, useNavigate } from "react-router-dom";
+import './index.css';
 
 const Register = () => {
     const [ loading, setLoading ] = useState(false);
