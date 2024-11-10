@@ -1,55 +1,36 @@
 //import { Login, Register } from './pages/auth';
 import Login from './pages/auth/login';
 import Register from './pages/auth/register';
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import MainLayout from './components/layouts/Main';
 import Profile from './pages/profile';
 import LoadingWrapper from './components/sheard/LoadingWrapper';
-import { getDoc, doc } from 'firebase/firestore';
-
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route, Navigate } from 'react-router-dom';
-import { FIRESTORE_PATH_NAMES, ROUTE_CONSTANTS } from './core/utils/constants'; 
-import { auth, db } from './services/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
-import { AuthContext } from './context/authContext';
+import { ROUTE_CONSTANTS } from './core/utils/constants'; 
 import CabinetLayout from './components/layouts/Cabinet';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserProfileInfo } from './state-managment/slices/userProfile';
 
 import './styles/global.css';
 
-const App = () => {
-    const [isAuth, setIsAuth] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [userProfileInfo, setUserProfileInfo] = useState({})
-    
-
-    const handleGetUserData = useCallback (async (uid) => {
-        const docRef =  doc(db, FIRESTORE_PATH_NAMES.REGISTERED_USERS, uid);
-        const response = await getDoc(docRef);
-
-        if (response.exists()) {
-            setUserProfileInfo(response.data());
-        }
-    }, []);
+const App = () => {       
+    const dispatch = useDispatch();
+    const { loading, authUserInfo: { isAuth} } = useSelector(store => store.userProfile);
     
     useEffect( () => {
-        onAuthStateChanged(auth, (user) => {
-            user?.uid && handleGetUserData(user.uid);
-            
-            setLoading(false);
-            setIsAuth(Boolean(user));
-        });
+        dispatch(fetchUserProfileInfo());
     }, []);
 
    
-    return (
-        <AuthContext.Provider value={{ isAuth, userProfileInfo, handleGetUserData }}>
+    return (        
         <LoadingWrapper loading={loading}>
         <RouterProvider
          router={
             createBrowserRouter(
                 createRoutesFromElements(
                     <Route path="/" element={<MainLayout />}>
-                      <Route path={ROUTE_CONSTANTS.LOGIN} element={ isAuth ? <Navigate to={ROUTE_CONSTANTS.CABINET}/> : <Login setIsAuth={setIsAuth}/>}/>
+                      <Route path={ROUTE_CONSTANTS.LOGIN} element={ isAuth ? <Navigate to={ROUTE_CONSTANTS.CABINET}/> : <Login />}/>                   
+
                       <Route path={ROUTE_CONSTANTS.REGISTER} element={ isAuth ? <Navigate to={ROUTE_CONSTANTS.CABINET}/> : <Register />}/>
                       
                       {/* Cabinet Layout Route */}
@@ -62,8 +43,7 @@ const App = () => {
             )
          }
          />
-         </LoadingWrapper>
-       </AuthContext.Provider>  
+         </LoadingWrapper>             
     )
 };
 
