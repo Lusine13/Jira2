@@ -34,7 +34,7 @@ const Login = () => {
 
 
   return (
-    <AuthWrapper title="Sign in" banner={loginBanner}>
+    <AuthWrapper title="Sign in" banner={loginBanner}>      
       <Form layout="vertical" form={form} onFinish={handleLogin}>
         <Form.Item 
         label="Email"

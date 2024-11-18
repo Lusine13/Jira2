@@ -4,6 +4,7 @@ import Register from './pages/auth/register';
 import { useEffect } from 'react';
 import MainLayout from './components/layouts/Main';
 import Profile from './pages/profile';
+import Cabinet from './pages/cabinet';
 import LoadingWrapper from './components/sheard/LoadingWrapper';
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route, Navigate } from 'react-router-dom';
 import { ROUTE_CONSTANTS } from './core/utils/constants'; 
@@ -37,6 +38,7 @@ const App = () => {
                     <Route path={ROUTE_CONSTANTS.CABINET} element={isAuth? <CabinetLayout /> : <Navigate to={ROUTE_CONSTANTS.LOGIN}/>}>
                     <Route path={ROUTE_CONSTANTS.PROFILE} element={<Profile/>}/>
 
+                    <Route path={ROUTE_CONSTANTS.CABINET} element={<Cabinet/>}/>
                       </Route>
                     </Route>
                 )

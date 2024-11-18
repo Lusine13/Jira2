@@ -1,53 +1,43 @@
-import { useState } from 'react';
-import { storage } from '../../../services/firebase';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { Upload, Button, message, Progress, Image } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Upload, Progress } from 'antd';
+import { useSelector } from 'react-redux';
+import { PlusOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
 
-const ImgUpload = () => {
-        const [ progress, setProgress ] = useState(0);
-        const [ uploading, setUploading ] = useState(false);
-        const [ url, setUrl ] = useState('');
-
-        const handleUpload = ({file}) => {
-            setUploading(true);
-            const storageRef = ref(storage, `profileImages/${file.name}`);
-            const uploadTask = uploadBytesResumable(storageRef, file);
-          
-            uploadTask.on('state_changed', (snapshot) => {                
-                const progressValue = Math.round((snapshot.bytesTransferred/snapshot.totalBytes) * 100);
-                setProgress(progressValue);
-            },
-                (error) => {
-                setUploading(false);
-                setProgress(0);
-                message.error('Error aploading file ${error.message');
-            },
-                () => {
-                getDownloadURL(uploadTask.snapshot.ref)
-                .then((imgUrl) => {
-                    setUploading(false);
-                    setProgress(0);
-                    setUrl(imgUrl);
-                    message.success('Upload successful');
-                })                
-            }
-          );
-        }    
+const ImgUpload = ({ progress, uploading, handleUpload }) => {
+    const { userData: { imgUrl, uid, firstName, lastName }} = useSelector(store => store.userProfile.authUserInfo);
+           
+    const uploadButton = ( 
+        <button style={{ border: 0, background: 'none' }} type="button">
+            {uploading ? <Progress type="circle" size={80} percent={progress}/> : <PlusOutlined />}
+            <div style={{ marginTop: 8 }}>Upload</div>
+        </button>
+    );    
 
     return (
         <div>
-        <Upload
-        customRequest={handleUpload}
-        showUploadList={false}
+          <Upload
+          fileList={[
+            {
+                uid: uid,
+                name: `${firstName} ${lastName}`,
+                status: `done`,
+                url: imgUrl,
+            },
+          ]}
+        customRequest={handleUpload}        
+        listType="picture-card"
         >
-            <Button disabled={uploading} icon={<UploadOutlined />}>
-                {uploading ? 'Uploading ...' : 'Upload Image'}
-            </Button>
-         </Upload>
-         { uploading && <Progress percent={progress}/> }
-         { url && <div><Image width={100} src={url}/></div> } 
-        </div>
+           {uploadButton}
+         </Upload>        
+        </div> 
     )
 };
+ImgUpload.propTypes = {
+    process: PropTypes.number.isRequired,
+    aploading: PropTypes.bool.isRequired,
+    handleUpload: PropTypes.func.isRequired,
+    
+}
+
+
 export default ImgUpload;

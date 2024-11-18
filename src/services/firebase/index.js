@@ -5,7 +5,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDKSqTNc4fHcMhYWeEwMidRQN-EnbB-0zA",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "jira-228e9.firebaseapp.com",
   projectId: "jira-228e9",
   storageBucket: "jira-228e9.appspot.com",

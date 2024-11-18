@@ -3,7 +3,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../../services/firebase';
 import { ROUTE_CONSTANTS } from '../../../core/utils/constants';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setIsAuth } from '../../../state-managment/slices/userProfile';
 import './index.css';
 
@@ -18,7 +18,7 @@ const getFullNameLetter = ({ firstName, lastName }) => {
     return '-'
 }
 
-const AuthProfileDropDown = ({ userProfileInfo }) => {
+const AuthProfileDropDown = ({ userProfileInfo }) => {    
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { token } = useToken();
@@ -66,7 +66,7 @@ const AuthProfileDropDown = ({ userProfileInfo }) => {
             }}
             >
                 <Flex vertical align='center' style={{padding: token.sizeMS}}>
-                    <Avatar src='https://png.pngtree.com/png-vector/20220709/ourmid/pngtree-businessman-user-avatar-wearing-suit-with-red-tie-png-image_5809521.png'/>
+                    <Avatar src={userProfileInfo.imgUrl}/>
                     <Text>{userProfileInfo.firstName} {userProfileInfo.lastName}</Text>
                     <Text type="secondary" underline>{userProfileInfo.email}</Text>
                 </Flex>
