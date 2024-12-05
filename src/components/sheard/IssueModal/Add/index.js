@@ -5,8 +5,11 @@ import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../../../services/firebase';
 import { FIRESTORE_PATH_NAMES } from '../../../../core/utils/constants';
 import { generateUid } from '../../../../core/helpers/generateUid';
+import { useDispatch } from 'react-redux';
+import { fetchIssuesData } from '../../../../state-managment/slices/issues'
 
 const AddIssueModal = ({ isOpen, onClose }) => {
+    const dispatch = useDispatch();
     const [ form ] = Form.useForm();
     const [ buttonLoading, setButtonLoading ] = useState(false);
 
@@ -19,7 +22,7 @@ const AddIssueModal = ({ isOpen, onClose }) => {
             ...values,
             date: new Date().toLocaleDateString()
         };
-        
+      
         try {
             const createdDoc = doc(db, FIRESTORE_PATH_NAMES.ISSUES, taskId);
             await setDoc(createdDoc, taskModel);            
@@ -28,6 +31,7 @@ const AddIssueModal = ({ isOpen, onClose }) => {
             notification.success({
                 message: 'Your task has been created'
             });
+         dispatch(fetchIssuesData());
         }catch {
             notification.error({
                 message: 'Error Ooops'

@@ -3,7 +3,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../../services/firebase';
 import { ROUTE_CONSTANTS } from '../../../core/utils/constants';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setIsAuth } from '../../../state-managment/slices/userProfile';
 import './index.css';
 
