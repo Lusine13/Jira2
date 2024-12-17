@@ -2,9 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { db } from '../../../services/firebase';
 import { getDocs, collection } from 'firebase/firestore';
 import { FIRESTORE_PATH_NAMES } from '../../../core/utils/constants';
+import { transformIssueData } from "../../../core/helpers/transformIssueData";
 
 const initialState = {
-    data: [],
+    data: {},
     error: null,
     isLoading: false
 }
@@ -12,16 +13,40 @@ const initialState = {
 export const fetchIssuesData = createAsyncThunk('data/fetchData', async () => {
     const queryData = await getDocs(collection(db, FIRESTORE_PATH_NAMES.ISSUES));
     
-   return queryData.docs.map((doc) => {
+   const resultData = queryData.docs.map((doc) => {
     return doc.data();
-   })   
+   })  
+   return transformIssueData(resultData)   
 });
 
 const issueSlice = createSlice({
     name: 'issues',
     initialState,
     reducers: {
-        
+        changeIssueColumns: (state,action) => {
+            const columns = state.data;
+            const { destination, source } = action.payload;
+            const sourceColumnItems = [...columns[source.droppableId]];
+            const destinationColumnItems = [...columns[destination.droppableId]];
+            const [removedItem] = sourceColumnItems.splice(source.index, 1);
+            destinationColumnItems.splice(destination.index, 0, removedItem);
+            let changedColumns = {};
+            if (source.droppableId !== destination.droppableId) {
+               changedColumns = {
+                ...columns,
+                [source.droppableId]:sourceColumnItems,
+                [destination.droppableId]: destinationColumnItems
+               }
+              
+            } else {
+                sourceColumnItems.splice(destination.index, 0, removedItem);
+                changedColumns = {
+                    ...columns,
+                    [source.droppableId]: sourceColumnItems
+                }
+            }
+            state.data = changedColumns;
+        }
     },
     extraReducers: (promise) => {
         promise
@@ -39,5 +64,5 @@ const issueSlice = createSlice({
         })
     }
 })
-
+export const { changeIssueColumns } = issueSlice.actions;
 export default issueSlice.reducer;

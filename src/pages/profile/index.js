@@ -4,7 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db, storage } from '../../services/firebase';
 import { FIRESTORE_PATH_NAMES, STORAGE_PATH_NAMES } from '../../core/utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { setProfileImgUrl } from '../../state-managment/slices/userProfile';
+import { fetchUserProfileInfo, setProfileImgUrl } from '../../state-managment/slices/userProfile';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import ImgUpload from '../../components/sheard/ImgUpload';
 import "./index.css";

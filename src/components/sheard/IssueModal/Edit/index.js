@@ -7,6 +7,7 @@ import { FIRESTORE_PATH_NAMES } from "../../../../core/utils/constants";
 import { useDispatch } from "react-redux";
 import { fetchIssuesData } from "../../../../state-managment/slices/issues";
 
+
 const EditIssueModal = ({ isOpen, onClose, data }) => {
     const [ buttonLoading, setButtonLoading ] = useState(false);  
     const dispatch = useDispatch();
