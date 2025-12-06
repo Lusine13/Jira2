@@ -1,4 +1,3 @@
-//import { Login, Register } from './pages/auth';
 import Login from './pages/auth/login';
 import Register from './pages/auth/register';
 import { useEffect } from 'react';
@@ -30,9 +29,11 @@ const App = () => {
             createBrowserRouter(
                 createRoutesFromElements(
                     <Route path="/" element={<MainLayout />}>
-                      <Route path={ROUTE_CONSTANTS.LOGIN} element={ isAuth ? <Navigate to={ROUTE_CONSTANTS.CABINET}/> : <Login />}/>                   
+                    <Route index element={<Navigate to={ROUTE_CONSTANTS.REGISTER} replace />} />
 
-                      <Route path={ROUTE_CONSTANTS.REGISTER} element={ isAuth ? <Navigate to={ROUTE_CONSTANTS.CABINET}/> : <Register />}/>
+                    <Route path={ROUTE_CONSTANTS.LOGIN} element={ isAuth ? <Navigate to={ROUTE_CONSTANTS.CABINET}/> : <Login />}/>                   
+
+                    <Route path={ROUTE_CONSTANTS.REGISTER} element={ isAuth ? <Navigate to={ROUTE_CONSTANTS.CABINET}/> : <Register />}/>
                       
                       {/* Cabinet Layout Route */}
                     <Route path={ROUTE_CONSTANTS.CABINET} element={isAuth? <CabinetLayout /> : <Navigate to={ROUTE_CONSTANTS.LOGIN}/>}>

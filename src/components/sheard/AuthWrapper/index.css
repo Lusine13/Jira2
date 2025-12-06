@@ -1,20 +1,43 @@
 .auth_wrapper {
-    max-width: 800px;
+    max-width: 900px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    margin: 10px auto;
+    margin: 60px auto;
+    border-radius: 16px;
+    overflow: hidden; 
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 
+
 .banner_container {
-    border-bottom-left-radius: 12px;
-    border-top-left-radius: 12px;
     background-size: cover;
     background-position: center;
+    filter: brightness(0.9);
 }
 
 .form_container {
-    border: 1px solid rgba(221, 220, 220, .92);
-    border-bottom-right-radius: 12px;
-    border-top-right-radius: 12px;
-    padding: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
+@media (max-width: 768px) {
+  .auth_wrapper {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+    margin: 20px;
+    border-radius: 12px; 
+  }
+
+  .banner_container {
+    display: none;
+  }
+
+  .form_container {
+    padding: 30px;
+    width: 100%;
+  }
+}
+

@@ -7,7 +7,7 @@ import { setDoc, doc } from 'firebase/firestore';
 import AuthWrapper from '../../../components/sheard/AuthWrapper';
 import registerBanner from '../../../core/images/auth-register.jpg';
 import { Link, useNavigate } from "react-router-dom";
-import './index.css';
+
 
 const Register = () => {
     const [ loading, setLoading ] = useState(false);
@@ -114,13 +114,9 @@ return (
           <Input.Password placeholder="Config Password"/>
           </Form.Item>
 
-          <Flex align="flex-end" gap="10px" justify="flex-end">
-          <Link to={ROUTE_CONSTANTS.LOGIN}>
-            Sign in
-          </Link>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Sign up
-          </Button>
+          <Flex justify="space-between" align="center" style={{ marginTop: "20px" }}>
+            <Link to={ROUTE_CONSTANTS.LOGIN} style={{ fontSize: "16px", fontWeight: 500 }}>Sign in</Link>
+            <Button type="primary" loading={loading} size="large" htmlType="submit">Sign up</Button>
           </Flex>
 
         </Form>
