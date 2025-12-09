@@ -1,14 +1,13 @@
 .auth_wrapper {
-    max-width: 900px;
+    max-width: 1000px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    margin: 60px auto;
+    margin: 30px auto;
     border-radius: 16px;
     overflow: hidden; 
     background: #fff;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
-
 
 .banner_container {
     background-size: cover;
@@ -17,7 +16,7 @@
 }
 
 .form_container {
-  padding: 20px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
